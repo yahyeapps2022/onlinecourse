@@ -7,29 +7,20 @@
 </head>
 
 <body>
-
     <div class="container mt-5 text-center">
-        <h2>Congratulations</h2>
+        <h2>Congratulations!</h2>
 
-        <p class="lead">
-            Your Score: <strong>{{ submission.score }}</strong>
-        </p>
+        <p class="lead">Score: <strong>{{ total_score }} / {{ possible_score }}</strong></p>
 
-        <h4>Exam Results</h4>
+        <h4>Exam Results:</h4>
         <ul class="list-group">
             {% for choice in submission.choices.all %}
-            <li class="list-group-item">
-                {{ choice.choice_text }}
-                {% if choice.is_correct %}
-                ✅
-                {% else %}
-                ❌
-                {% endif %}
+            <li class="list-group-item {% if choice.is_correct %}correct{% else %}incorrect{% endif %}">
+                {{ choice.question.question_text }} - {{ choice.choice_text }}
             </li>
             {% endfor %}
         </ul>
     </div>
-
 </body>
 
 </html>

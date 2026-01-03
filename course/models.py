@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# -------------------
+# Core Course Models
+# -------------------
 
 class Course(models.Model):
     name = models.CharField(max_length=200)
@@ -18,6 +21,10 @@ class Lesson(models.Model):
     def __str__(self):
         return self.title
 
+
+# -------------------
+# Assessment Models
+# -------------------
 
 class Question(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
@@ -45,3 +52,31 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.course.name}"
+
+
+# -------------------
+# Users Models
+# -------------------
+
+class Instructor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_time = models.BooleanField(default=True)
+    total_learners = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Learner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    occupation_choices = [
+        ('student', 'Student'),
+        ('developer', 'Developer'),
+        ('data_scientist', 'Data Scientist'),
+        ('dba', 'Database Admin')
+    ]
+    occupation = models.CharField(max_length=20, choices=occupation_choices, default='student')
+    social_link = models.URLField(max_length=200)
+
+    def __str__(self):
+        return self.user.username
